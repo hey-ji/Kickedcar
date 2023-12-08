@@ -79,4 +79,4 @@ rf_predictions <- final_wf %>%
   bind_cols(test) %>%
   rename(IsBadBuy=.pred_1) %>%
   select(RefId, IsBadBuy)
-vroom_write(x = rf_predictions, file = "/Users/student/Desktop/STAT348/STAT348/RandomForest.csv", delim = ",")
+vroom_write(x = rf_predictions, file = "RandomForest.csv", delim = ",")
