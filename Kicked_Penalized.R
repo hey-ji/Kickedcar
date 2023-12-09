@@ -69,7 +69,7 @@ penalized_predictions <- final_wf %>%
   predict(new_data = test, type="prob") %>%
   bind_cols(test) %>%
   rename(IsBadBuy=.pred_1) %>%
-  select(RefId, IsBadBuy)
+  select(ID, IsBadBuy)
 
 vroom_write(x = penalized_predictions, file = "PenalizedLogisticRegression.csv", delim = ",")
 

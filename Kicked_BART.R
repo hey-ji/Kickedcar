@@ -4,6 +4,8 @@ library(embed)
 library(vroom)
 library(vcd)
 library(discrim)
+install.packages("dbarts")
+library(dbarts)
 
 # Read in the data
 training <-vroom("./training.csv", na=c("","NULL","NA")) %>%
@@ -72,6 +74,6 @@ boost_predictions <- predict(final_wf,
                              type="class") %>%
   bind_cols(test) %>%
   rename(IsBadBuy=.pred_1) %>%
-  select(RefId, IsBadBuy)
+  select(ID, IsBadBuy)
 
 vroom_write(x = boost_predictions, file = "Bart.csv", delim = ",")

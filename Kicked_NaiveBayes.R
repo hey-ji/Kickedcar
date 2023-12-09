@@ -74,7 +74,7 @@ bayes_predictions <- predict(final_wf,
                              type="class") %>%
   bind_cols(test) %>%
   rename(IsBadBuy=.pred_1) %>%
-  select(RefId, IsBadBuy)
+  select(ID, IsBadBuy)
 
 vroom_write(x = bayes_predictions, file = "NaiveBayes.csv", delim = ",")
 

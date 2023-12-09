@@ -5,6 +5,7 @@ library(vroom)
 library(vcd)
 library(discrim)
 
+
 # Read in the data
 training <-vroom("./training.csv", na=c("","NULL","NA")) %>%
   mutate(IsBadBuy = factor(IsBadBuy))
@@ -78,5 +79,5 @@ rf_predictions <- final_wf %>%
   predict(new_data = test, type="prob") %>%
   bind_cols(test) %>%
   rename(IsBadBuy=.pred_1) %>%
-  select(RefId, IsBadBuy)
+  select(ID, IsBadBuy)
 vroom_write(x = rf_predictions, file = "RandomForest.csv", delim = ",")
