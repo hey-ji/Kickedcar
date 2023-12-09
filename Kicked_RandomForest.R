@@ -12,7 +12,7 @@ training <-vroom("./training.csv", na=c("","NULL","NA")) %>%
 test <- vroom("./test.csv", na=c("","NULL","NA"))
 
 # Recipe
-my_recipe <- recipe(IsBadBuy ~ ., data = train) %>%
+my_recipe <- recipe(IsBadBuy ~ ., data = training) %>%
   step_novel(all_nominal_predictors(), -all_outcomes()) %>%
   step_unknown(all_nominal_predictors()) %>% 
   step_lencode_mixed(all_nominal_predictors(), outcome = vars(IsBadBuy)) %>%
