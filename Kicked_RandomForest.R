@@ -71,5 +71,6 @@ rf_predictions <- final_wf %>%
   predict(new_data = test, type="prob") %>%
   bind_cols(test) %>%
   rename(IsBadBuy=.pred_1) %>%
-  select(ID, IsBadBuy)
+  select(RefId, IsBadBuy)
+
 vroom_write(x = rf_predictions, file = "RandomForest.csv", delim = ",")

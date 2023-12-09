@@ -18,15 +18,15 @@ library(discrim)
 #   step_normalize(all_numeric_predictors())
 
 # Read in the data
-#setwd("/Users/student/Desktop/STAT348/Kickedcar")
-#kicked_training <-vroom("/Users/student/Desktop/STAT348/Kickedcar/training.csv", na=c("","NULL","NA")) %>%
-#    mutate(IsBadBuy = factor(IsBadBuy))
-#kicked_test <- vroom("/Users/student/Desktop/STAT348/Kickedcar/test.csv", na=c("","NULL","NA"))
+setwd("/Users/student/Desktop/STAT348/Kickedcar")
+kicked_training <-vroom("/Users/student/Desktop/STAT348/Kickedcar/training.csv", na=c("","NULL","NA")) %>%
+    mutate(IsBadBuy = factor(IsBadBuy))
+kicked_test <- vroom("/Users/student/Desktop/STAT348/Kickedcar/test.csv", na=c("","NULL","NA"))
 
-kicked_training <-vroom("./training.csv", na=c("","NULL","NA")) %>%
-  mutate(IsBadBuy = factor(IsBadBuy))
-view(kicked_training)
-kicked_test <- vroom("./test.csv", na=c("","NULL","NA"))
+# kicked_training <-vroom("./training.csv", na=c("","NULL","NA")) %>%
+#   mutate(IsBadBuy = factor(IsBadBuy))
+# view(kicked_training)
+# kicked_test <- vroom("./test.csv", na=c("","NULL","NA"))
 
 my_recipe <- recipe(IsBadBuy~., data= kicked_training) %>%
   update_role(RefId, new_role = 'ID') %>% #make it into ID so it's not a predictor

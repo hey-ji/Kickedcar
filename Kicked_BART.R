@@ -13,22 +13,14 @@ training <-vroom("./training.csv", na=c("","NULL","NA")) %>%
 test <- vroom("./test.csv", na=c("","NULL","NA"))
 
 # Recipe
-my_recipe <- recipe(IsBadBuy~., data= training) %>%
-  update_role(RefId, new_role = 'ID') %>% #make it into ID so it's not a predictor
-  update_role_requirements("ID", bake = FALSE) %>% #
-  step_mutate(IsBadBuy = factor(IsBadBuy), skip = TRUE) %>% # It converts the variable IsBadBuy to a factor
-  step_mutate(IsOnlineSale = factor(IsOnlineSale)) %>% 
-  step_mutate_at(all_numeric_predictors(), fn = factor) %>% # turn all numeric features into factors
-  step_rm(contains('MMR')) %>%
-  step_rm(BYRNO, WheelTypeID, BYRNO, WheelTypeID, VehYear, VNST, VNZIP1, PurchDate, # these variables don't seem very informative, or are repetitive
-          AUCGUART, PRIMEUNIT, # these variables have a lot of missing values
-          Model, SubModel, Trim) %>%
+my_recipe <- recipe(IsBadBuy ~ ., data = train) %>%
+  step_novel(all_nominal_predictors(), -all_outcomes()) %>%
+  step_unknown(all_nominal_predictors()) %>% 
+  step_lencode_mixed(all_nominal_predictors(), outcome = vars(IsBadBuy)) %>%
+  step_impute_mean(all_numeric_predictors()) %>%
   step_corr(all_numeric_predictors(), threshold = .7) %>%
-  step_other(all_nominal_predictors(), threshold = .0001) %>%
-  step_novel(all_nominal_predictors()) %>%
-  step_unknown(all_nominal_predictors()) %>%
-  step_dummy(all_nominal_predictors()) %>%
-  step_impute_median(all_numeric_predictors())
+  step_zv() %>%
+  step_normalize(all_numeric_predictors())
 
 prep <- prep(my_recipe)
 bake(prep, new_data=training)
@@ -69,11 +61,10 @@ final_wf %>%
   predict(new_data = test)
 
 # Predict
-boost_predictions <- predict(final_wf,
-                             new_data=test,
-                             type="class") %>%
+bart_predictions <- final_wf %>%
+  predict(new_data = test, type="prob") %>%
   bind_cols(test) %>%
   rename(IsBadBuy=.pred_1) %>%
-  select(ID, IsBadBuy)
+  select(RefId, IsBadBuy)
 
-vroom_write(x = boost_predictions, file = "Bart.csv", delim = ",")
+vroom_write(x = bart_predictions, file = "Bart.csv", delim = ",")
