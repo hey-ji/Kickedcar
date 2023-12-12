@@ -8,9 +8,15 @@ install.packages("dbarts")
 library(dbarts)
 
 # Read in the data
-training <-vroom("./training.csv", na=c("","NULL","NA")) %>%
+
+setwd("/Users/student/Desktop/STAT348/Kickedcar")
+training <-vroom("/Users/student/Desktop/STAT348/Kickedcar/training.csv", na=c("","NULL","NA")) %>%
   mutate(IsBadBuy = factor(IsBadBuy))
-test <- vroom("./test.csv", na=c("","NULL","NA"))
+test <- vroom("/Users/student/Desktop/STAT348/Kickedcar/test.csv", na=c("","NULL","NA"))
+
+# training <-vroom("./training.csv", na=c("","NULL","NA")) %>%
+#   mutate(IsBadBuy = factor(IsBadBuy))
+# test <- vroom("./test.csv", na=c("","NULL","NA"))
 
 # Recipe
 my_recipe <- recipe(IsBadBuy ~ ., data = training) %>%
