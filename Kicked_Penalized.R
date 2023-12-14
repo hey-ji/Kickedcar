@@ -48,7 +48,7 @@ CV_results <- wf %>%
 # Find Best Tuning Parameters
 bestTune <- CV_results %>%
   select_best("roc_auc")
-
+bestTune
 
 # Finalize the Workflow & fit it
 final_wf <-

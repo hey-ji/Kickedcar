@@ -57,6 +57,7 @@ CV_results <- wf %>%
 bestTune <- CV_results %>%
   select_best("roc_auc")
 
+bestTune
 # Finalize workflow and predict
 final_wf <-
   wf %>%

@@ -50,6 +50,7 @@ nb_cv <- wf %>%
 ## Find the best Fit
 bestTune <- nb_cv %>%
   select_best("accuracy")
+bestTune
 
 # Finalize workflow and predict
 final_wf <-
